@@ -4,6 +4,7 @@
   "description": "Picking a place to dine-in or take-out in a Room with your Family & Friends!",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -21,6 +22,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "http": "0.0.1-security",
+    "nodemon": "^2.0.7",
     "socket.io": "^3.1.0"
   }
 }
