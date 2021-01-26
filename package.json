@@ -1,0 +1,26 @@
+{
+  "name": "fiaai",
+  "version": "1.0.0",
+  "description": "Picking a place to dine-in or take-out in a Room with your Family & Friends!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Room",
+    "Restaraunt",
+    "Rating",
+    "Review"
+  ],
+  "author": "Andre Westerlund",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "socket.io": "^3.1.0"
+  }
+}
