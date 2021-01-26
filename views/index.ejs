@@ -3,9 +3,13 @@
     <hr>
     <form action="/submitName" method="POST">
         <label for="name">Enter your name:</label>
-        <input type="text" id="name" name="name">
+        <input type="text" id="name" name="name" required>
+         <label for="room">Enter Room Code:</label>
+        <input type="text" id="room" name="room" required>
         <input type="submit" value="Submit">
     </form>
-    
+    <% if(errorMsg){%>
+        <p>Room does not exist</p>
+    <%}%>
 <%- include('partials/footer') %>
     

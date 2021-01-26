@@ -8,6 +8,7 @@ const routes = require('./routes/index');
 
 // Static Middleware
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'media')));
 
 // View Engine Setup
 app.set('views', path.join(__dirname, 'views'));

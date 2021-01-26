@@ -5,37 +5,16 @@
     <div class="wrap">
         <!-- start jtinder container -->
         <div id="tinderslide">
+        <input type="hidden" name="len" id="len" value="<%=places.length%>">
             <ul>
-                <li class="pane1">
-                    <div class="img"></div>
-                    <div>Miami Beach</div>
+                <% for(var i = 0; i < places.length; i++){%>
+                <li class="pane<%= i + 1 %>" data-id="<%= places[i].id %>">
+                    <div class="img" style="background: url(<%= places[i].image %>) no-repeat scroll center center;background-size: cover;"></div>
+                    <div><%= places[i].title %></div>
                     <div class="like"></div>
                     <div class="dislike"></div>
                 </li>
-                <li class="pane2">
-                    <div class="img"></div>
-                    <div>San Francisco</div>
-                    <div class="like"></div>
-                    <div class="dislike"></div>
-                </li>
-                <li class="pane3">
-                    <div class="img"></div>
-                    <div>Chicago</div>
-                    <div class="like"></div>
-                    <div class="dislike"></div>
-                </li>
-                <li class="pane4">
-                    <div class="img"></div>
-                    <div>New York</div>
-                    <div class="like"></div>
-                    <div class="dislike"></div>
-                </li>
-                <li class="pane5">
-                    <div class="img"></div>
-                    <div>Beach</div>
-                    <div class="like"></div>
-                    <div class="dislike"></div>
-                </li>
+                <% }%>
             </ul>
         </div>
         <!-- end jtinder container -->
@@ -57,8 +36,6 @@
     <script type="text/javascript" src="/js/jquery.transform2d.js"></script>
     <!-- jTinder lib -->
     <script type="text/javascript" src="/js/jquery.jTinder.js"></script>
-    <!-- jTinder initialization script -->
-    <script type="text/javascript" src="/js/main.js"></script>
 <%- include('partials/footer') %>
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 <script src="/js/app.js"></script>

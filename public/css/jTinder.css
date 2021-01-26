@@ -128,7 +128,7 @@ body {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -webkit-transform: translate3d(0,0,0) scale3d(1,1,1);
-    -webkit-transform-style: preserve-3d;
+    /*-webkit-transform-style: preserve-3d;*/
 }
 
 /* Action - buttons */
@@ -163,7 +163,7 @@ body {
     float: left;
     display: block;
     background-color: #f7f7f7;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#e7e7e7));
+    /*background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#e7e7e7));*/
     background-image: -webkit-linear-gradient(top, #f7f7f7, #e7e7e7);
     background-image: -moz-linear-gradient(top, #f7f7f7, #e7e7e7);
     background-image: -ms-linear-gradient(top, #f7f7f7, #e7e7e7);
@@ -187,7 +187,7 @@ body {
 }
 
 /* jTinder images */
-#tinderslide .pane5 .img {
+/* #tinderslide .pane5 .img {
     background: url("../img/jTinder/pane/pane5.jpg") no-repeat scroll center center;
     background-size: cover;
 }
@@ -206,7 +206,7 @@ body {
 #tinderslide .pane1 .img {
     background: url("../img/jTinder/pane/pane1.jpg") no-repeat scroll center center;
     background-size: cover;
-}
+} */
 
 /* jTinder status text */
 #status {
