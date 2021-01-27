@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var passportLocalMongoose = require('passport-local-mongoose');
-
+const auth = require('../config/constants/USER_CONSTANTS').ROLE;
 var UserSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -11,8 +11,8 @@ var UserSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now },
   role: {
     type: String,
-    enum: ['User', 'Contributer', 'PlaceOwner','Admin'],
-    default: 'User'  
+    enum: [auth.User, auth.Contributor, auth.PlaceOwner,auth.Admin],
+    default: auth.User  
   }
 });
 

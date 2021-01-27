@@ -16,7 +16,11 @@ router.get('/fiaai/client', async function(req,res){
 //API Routes
 const gameRoutes = require('./game');
 const placeRoutes = require('./place');
+const userRoutes = require('./user');
+const authRoutes = require('./auth');
 router.use('/api/game/', gameRoutes);
 router.use('/api/places/', placeRoutes);
+router.use('/api/users/', userRoutes);
+router.use('/auth/', authRoutes);
 
 module.exports = router;
