@@ -57,4 +57,6 @@ document.addEventListener("DOMContentLoaded", function(){
     //notify when others dislike places
 
     //on result(s) received
+
+    //notify when all places done
 });

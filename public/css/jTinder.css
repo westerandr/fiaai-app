@@ -8,11 +8,24 @@ html, body {
 body {
     overflow: hidden;
 }
-
 /* Wrapper with padding */
 .wrap  {
     height: 300px;
     padding: 5%;
+}
+
+@media (min-width: 1280px){
+    .wrap{
+        padding-top:0px;
+        padding-bottom:2%;
+        padding-left:15%;
+        padding-right:15%;
+        height: 550px;
+    }
+
+    body{
+        overflow: scroll;
+    }
 }
 
 #tinderslide {

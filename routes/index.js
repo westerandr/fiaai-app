@@ -14,7 +14,7 @@ router.get('/', function(req, res){
     }else{
         dict['errorMsg'] = false
     }
-    res.render('index', dict);
+    res.render('index');
 });
 
 router.get('/fiaai/client', function(req,res){
