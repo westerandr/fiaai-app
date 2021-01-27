@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 
 const placeSchema = new mongoose.Schema({
-    name: String,
-    image: String,
+    name: {type:String, required:true, unique:true},
+    image: {type:String, required:true, unique:true},
     phone:Number,
     location: String,
     directions: String,
     category: String,
-    description: String,
-    tags: [String]
+    description: String
 });
 
 module.exports = mongoose.model('Place', placeSchema);

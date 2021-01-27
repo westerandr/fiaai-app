@@ -1,33 +1,22 @@
 const express = require('express');
 const router = express.Router();
 
-const data = require('../dummy_data');
-const games = [data.createGame('SPIES','g1' )];
-const rooms = [data.createRoom('SPIES', 'g1')];
+const Place = require('../models/place');
+
 //Front Page
-router.get('/', function(req, res){
-    var dict = {
-        title: 'Fiaai'
-    }
-    if(req.query.errorMsg){
-        dict['errorMsg'] = true
-    }else{
-        dict['errorMsg'] = false
-    }
+router.get('/', function(_req, res){
     res.render('index');
 });
 
-router.get('/fiaai/client', function(req,res){
-    res.render('fiaai', {title: 'Fiaai', name: req.query.name,room:req.query.room, places: data.places.sort(() => Math.random() - 0.5)});
+router.get('/fiaai/client', async function(req,res){
+    const places = await Place.find({});
+    res.render('fiaai', {name: req.query.name, places:places});
 });
 
-router.post('/submitName', function(req,res){
-    const name = req.body.name;
-    const room = req.body.room;
-    if(rooms.find(roomItem => roomItem.name == room)){
-        return res.redirect('/fiaai/client?name='+name+'&room='+room);
-    }
-    res.redirect('/?errorMsg=RoomDoesNotExist');
-});
+//API Routes
+const gameRoutes = require('./game');
+const placeRoutes = require('./place');
+router.use('/api/game/', gameRoutes);
+router.use('/api/places/', placeRoutes);
 
 module.exports = router;

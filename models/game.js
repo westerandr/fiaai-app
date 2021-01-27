@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const STATUS = require('../config/constants/GAME_CONSTANTS').STATUS;
 const gameSchema = new mongoose.Schema({
-    places: [{ place:{
+    placesVotingMap: [{ place:{
         type: mongoose.Schema.ObjectId,
         ref: 'Place'
     },
-    votes: Number
+    votes: {type: Number, default: 0}
 
 }],
     gameStatus: {
