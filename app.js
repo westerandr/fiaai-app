@@ -18,7 +18,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'media')));
 
-app.use(express.bodyParser());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -35,13 +34,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
-
-
-if (process.env.NODE_ENV === 'development') {
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-}else if (process.env.NODE_ENV === 'production') {
-    app.use(express.errorHandler());
-}
 
 app.use('/', routes);
 
