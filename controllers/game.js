@@ -1,4 +1,12 @@
 const Game = require('../models/game');
+const constants = require('../config/constants/GAME_CONSTANTS');
+/**
+ *         try{
+
+        }catch(err){
+            res.json({error: err});
+        }
+ */
 module.exports = {
 
     /*NORMAL CRUD OPERATIONS*/ 
@@ -24,31 +32,34 @@ module.exports = {
         }  
     },
 
-    // POST /games/
-    create: function(req,res){
-        
-    },
-
     // DELETE /games/:id
-    delete: function(req,res){
-
+    delete: async function(req,res){
+        try{
+            const id = req.params.id;
+            await Game.findByIdAndDelete(id);
+            res.json({msg:'Game Deletion OK', _id: id});
+        }catch(err){
+            res.json({error: err});
+        }
     },
 
     /* GAME OPERATIONS */
 
-    // PUT /games/:id/startGame
-    startGame: function(req,res){
-
-    },
-
-    // PUT /games/:id/startGame
-    endGame: function(req,res){
-
+    // PUT /games/:id/endGame
+    endGame: async function(req,res){ 
+        try{
+            const id = req.params.id;
+            var game = await Game.findById(id);
+            game.gameStatus = constants.STATUS.EXPIRED;
+            
+        }catch(err){
+            res.json({error: err});
+        }
     },
 
     // PUT /games/:id/like/:placeId
     likePlace: function(req,res){
-
+        
     },
 
     // PUT /games/:id/dislike/:placeId

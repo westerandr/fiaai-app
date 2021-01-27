@@ -20,6 +20,12 @@ const gameSchema = new mongoose.Schema({
             place: {type: mongoose.Schema.ObjectId, ref: 'Place'},
             user: {type: mongoose.Schema.ObjectId, ref:'User'}
         }
+    ],
+    userVotes: [
+        {
+            user: {type: mongoose.Schema.ObjectId, ref:'User'},
+            castedVotes: {type: Number, default: 0}
+        }
     ]
 });
 

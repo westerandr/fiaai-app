@@ -11,7 +11,8 @@ const roomSchema = new mongoose.Schema({
         {
             user: {type: mongoose.Schema.ObjectId, ref: 'User'},
             socketId: String,
-            joined_at: Date,
+            joinedAt: Date,
+            readyToStart: Boolean,
         }
     ],
     currentGame: {
