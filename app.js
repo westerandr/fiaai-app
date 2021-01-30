@@ -35,6 +35,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
+app.use(function (req, res, next) {
+  res.locals.name = req.query.name
+  next()
+})
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler

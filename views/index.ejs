@@ -1,12 +1,17 @@
 <%- include('partials/header') %>
+<div class="container pt-2">
     <h1>Fiaai Web App</h1>
-    <hr>
-    <form action="/submitName" method="POST">
-        <label for="name">Enter your name:</label>
-        <input type="text" id="name" name="name" required>
-         <label for="room">Enter Room Code:</label>
-        <input type="text" id="room" name="room" required>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="row">
+        <form class="form col-sm-6" action="/fiaai/client" method="GET">
+            <label for="name" class="form-label">Enter your name:</label>
+            <div class="form-group mb-2">
+                <input class="form-control" type="text" id="name" name="name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</div>
+    
 <%- include('partials/footer') %>
     

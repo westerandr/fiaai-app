@@ -1,6 +1,7 @@
 <%- include('partials/header') %>
 <link rel="stylesheet" type="text/css" href="/css/jTinder.css">
 <h1>Welcome <%= name%></h1>
+<div id="jTinder-container" class="d-none">
     <!-- start padding container -->
     <div class="wrap">
         <!-- start jtinder container -->
@@ -9,7 +10,7 @@
             <ul>
                 <% for(var i = 0; i < places.length; i++){%>
                 <li class="pane<%= i + 1 %>" data-id="<%= places[i]._id %>">
-                    <div class="img" style="background: url(<%= places[i].image %>) no-repeat scroll center center;background-size: cover;"></div>
+                    <div class="img" style="background: url(<%= (places[i].image); %>) no-repeat scroll center center;background-size: cover;"></div>
                     <div><%= places[i].name %></div>
                     <div class="like"></div>
                     <div class="dislike"></div>
@@ -29,7 +30,7 @@
 
     <!-- jTinder status text  -->
     <!-- <div id="status"></div> -->
-
+</div>
     <!-- jQuery lib -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <!-- transform2d lib -->

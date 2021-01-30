@@ -1,4 +1,15 @@
+
+
 /**
+ * Set button action to trigger jTinder like & dislike.
+ */
+$('.actions .like, .actions .dislike').click(function(e){
+	e.preventDefault();
+	$("#tinderslide").jTinder($(this).attr('class'));
+});
+
+function initJTinder(){
+    /**
  * jTinder initialization
  */
 $("#tinderslide").jTinder({
@@ -21,15 +32,7 @@ $("#tinderslide").jTinder({
 	likeSelector: '.like',
 	dislikeSelector: '.dislike'
 });
-
-/**
- * Set button action to trigger jTinder like & dislike.
- */
-$('.actions .like, .actions .dislike').click(function(e){
-	e.preventDefault();
-	$("#tinderslide").jTinder($(this).attr('class'));
-});
-
+}
 
 
 
@@ -37,11 +40,13 @@ $('.actions .like, .actions .dislike').click(function(e){
 document.addEventListener("DOMContentLoaded", function(){
     
     const socket = io();
-
+    //initJTinder();
     //create or join room when OK is given
 
     //notify when others join room
     
+
+
     //leave room
 
     //notify when others leave room
