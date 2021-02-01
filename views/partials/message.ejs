@@ -1,0 +1,25 @@
+
+<% 
+var className, message, showFlashMessage = false; 
+if(error && error.length > 0){ 
+    className = 'danger';
+    message = error;  
+    showFlashMessage = true; 
+ } 
+if(success && success.length > 0){ 
+    className = 'success'; 
+    message = success; 
+    showFlashMessage = true;  
+}
+%> 
+<% if(showFlashMessage){ %> 
+  <div class="container my-2">
+    <div class="alert alert-<%= className %> alert-dismissible fade show animate" role="alert">
+      <%- message; %> 
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </button>
+    </div> 
+  </div>
+   
+<% } %> 
+

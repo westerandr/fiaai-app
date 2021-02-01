@@ -1,36 +1,70 @@
 <%- include('partials/header') %>
 <link rel="stylesheet" type="text/css" href="/css/jTinder.css">
-<h1>Welcome <%= name%></h1>
-<div id="jTinder-container" class="d-none">
-    <!-- start padding container -->
-    <div class="wrap">
-        <!-- start jtinder container -->
-        <div id="tinderslide">
-        <input type="hidden" name="len" id="len" value="<%=places.length%>">
-            <ul>
-                <% for(var i = 0; i < places.length; i++){%>
-                <li class="pane<%= i + 1 %>" data-id="<%= places[i]._id %>">
-                    <div class="img" style="background: url(<%= (places[i].image); %>) no-repeat scroll center center;background-size: cover;"></div>
-                    <div><%= places[i].name %></div>
-                    <div class="like"></div>
-                    <div class="dislike"></div>
-                </li>
-                <% }%>
-            </ul>
+
+<div id="jTinder-wrapper-container" class="container">    
+    <h1>Welcome <%= name%></h1>
+    <div id="jTinder-container" class="d-none">
+        <!-- start padding container -->
+        <div class="wrap">
+            <!-- start jtinder container -->
+            <div id="tinderslide">
+            <input type="hidden" name="len" id="len" value="<%=places.length%>">
+                <ul>
+                    <% for(var i = 0; i < places.length; i++){%>
+                    <li class="pane<%= i + 1 %>" data-id="<%= places[i]._id %>">
+                        <div class="img" style="background: url(<%= (places[i].image); %>) no-repeat scroll center center;background-size: cover;"></div>
+                        <div><%= places[i].name %></div>
+                        <div class="like"></div>
+                        <div class="dislike"></div>
+                    </li>
+                    <% }%>
+                </ul>
+            </div>
+            <!-- end jtinder container -->
         </div>
-        <!-- end jtinder container -->
+        <!-- end padding container -->
+    
+        <!-- jTinder trigger by buttons  -->
+        <div class="actions">
+            <a href="#" class="dislike"><i></i></a>
+            <a href="#" class="like"><i></i></a>
+        </div>
+    
+        <!-- jTinder status text  -->
+        <!-- <div id="status"></div> -->
     </div>
-    <!-- end padding container -->
-
-    <!-- jTinder trigger by buttons  -->
-    <div class="actions">
-        <a href="#" class="dislike"><i></i></a>
-        <a href="#" class="like"><i></i></a>
-    </div>
-
-    <!-- jTinder status text  -->
-    <!-- <div id="status"></div> -->
 </div>
+<div class="container-sm">
+    <div class="row d-flex justify-content-around" style="height:200px">
+        <div class="col border" style="height: 300px;">
+            <div class="container">         
+                <p class="leading pt-2">Users</p>   
+               <hr class="my-2">
+                <div>
+                    <ul id="usersInRoom" class="list-unstyled">
+                        <div class="row d-flex" id="<%= name%>-div">
+                            <div class="col">
+                                <li><strong><span id="myName"><%= name %></span></strong></li>
+                            </div>
+                            <div class="col">
+                                <li><span class="badge bg-danger ready-status">Unready</span></li>
+                            </div>
+                        </div>
+                      
+                    </ul>
+                </div>
+            </div>
+            <div id="readyBtnDiv" class="row w-75 mx-auto">
+                <button id="toggleReadyBtn" class="btn btn-sm btn-outline-success btn-block">Ready?</button>
+            </div>
+        </div>
+        <div class="col border" style="height: 200px;">
+
+        </div>
+    </div>
+</div>
+
+
     <!-- jQuery lib -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <!-- transform2d lib -->

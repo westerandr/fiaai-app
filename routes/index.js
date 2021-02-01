@@ -4,13 +4,22 @@ const router = express.Router();
 const Place = require('../models/place');
 
 //Front Page
-router.get('/', function(_req, res){
+router.get('/', function(req, res){
+    if(req.query){
+        req.flash('error', req.query.errorMsg);
+    }
     res.render('index');
 });
 
 router.get('/fiaai/client', async function(req,res){
     const places = await Place.find({});
-    res.render('fiaai', {name: req.query.name, places:places});
+    const name = req.query.name;
+    if(!name){
+        req.flash('error', 'Please enter a name');
+        return res.redirect('/');
+    }
+    req.session.name = name;
+    res.render('fiaai', {name: name, places:places});
 });
 
 //API Routes

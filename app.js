@@ -4,9 +4,14 @@ const path = require('path');
 const createError = require('http-errors');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+const session = require('express-session')({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+});
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const flash = require('connect-flash');
 
 const routes = require('./routes/index');
 
@@ -18,11 +23,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'media')));
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-}));
+app.use(session);
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // passport config
@@ -36,7 +38,9 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 
 app.use(function (req, res, next) {
-  res.locals.name = req.query.name
+  res.locals.name = req.query.name //testing purposes
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
   next()
 })
 
@@ -58,4 +62,4 @@ app.use(function(_req, _res, next) {
     res.render('error');
   });
 
-module.exports = app;
+module.exports = {app, session};

@@ -1,9 +1,13 @@
 require('dotenv').config();
 const http = require('http');
-const app = require('./app');
+const {app, session} = require('./app');
 const server = http.createServer(app);
 const io = require('socket.io')(server);
 const db = require('./config/db');
+const sharedSession = require('express-socket.io-session');
+
+//bridge between socket and express session
+io.use(sharedSession(session));
 
 //io handler
 require('./client/handler')(io);
