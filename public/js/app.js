@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const myName = $('#myName').html();
     const socket = io();
     const users = [myName];
+    let leader = false;
 
     //initJTinder();
     //create or join room when OK is given
@@ -52,6 +53,11 @@ document.addEventListener("DOMContentLoaded", function(){
         initJTinder(socket);
         setAllUsersInGame();
     });
+
+    socket.on('leader', function(){
+        leader = true;
+        console.log('I AM LEADER');
+    })
 
     //notify when others join room
     socket.on('user join', function(user){
@@ -106,13 +112,17 @@ document.addEventListener("DOMContentLoaded", function(){
         if(name == myName) return;
         removeUser(name);
         users.splice(users.indexOf(name),1);
+        //someone disconnects and reconnects 
+        if($('#startGameBtn').length){
+
+        }
     })
 
     //start game only if room leader
     socket.on('all users ready', function(){
         if($('#startGameBtn').length)return;
         //show start game button
-        $('#toggleReadyBtn').remove();
+        $('#toggleReadyBtn').hide();
         $('#readyBtnDiv').append('<button id="startGameBtn" class="btn btn-sm btn-primary btn-block">Start Game</button>');
         $('#startGameBtn').on('click',function(){
             socket.emit('leader start game');

@@ -66,7 +66,6 @@ module.exports = function(io){
                 return io.to(socket.id).emit('redirect', dest);
             }
             
-            console.log(`${socketSession.name}:sockId (${socket.id}) has connected`);
             if(users.length > 0){
                 for(var i = 0; i < users.length;i++){
                     io.to(socket.id).emit('user join', users[i]);
@@ -75,17 +74,31 @@ module.exports = function(io){
             }else{
                 userLeader = {name: socketSession.name, socId: socket.id};
                 console.log(`user leader is ${userLeader.name}`);
-            }            
-            users.push({name: socketSession.name, ready: false, votes: 0});
-            console.log('users: '+ users.length);
-            io.emit('user join', { name: socketSession.name, ready:false });
+            }
+            io.to(userLeader.socId).emit('leader');
             
+            if(!userExists(socketSession.name)){
+                users.push({name: socketSession.name, ready: false, votes: 0, socId: socket.id});
+                console.log('users: '+ users.length);
+                io.emit('user join', { name: socketSession.name, ready:false });
+                console.log(`${socketSession.name}:sockId (${socket.id}) has RE-connected`);
+                
+            }else{
+                console.log(`${socketSession.name}:sockId (${socket.id}) has connected`);
+            }
+           
     
             socket.on('disconnect', function(){
+                console.log('users: '+ users.length);
                 console.log(`${socketSession.name} disconnected`);
                 removeUserByName(socketSession.name);
-                io.emit('user disconnect', socketSession.name);
-                console.log('users: '+ users.length);
+                setTimeout(function(){
+                    if(!userExists(socketSession.name)){
+                        if(socketSession.name == userLeader.name && users.length > 0) setNextUserLeader(users[0].name);
+                        io.emit('user disconnect', socketSession.name);
+                    }
+                    
+                }, 1000)
                 if(users.length < 1 && game.started){
                     game.started = false;
                 }
@@ -138,7 +151,13 @@ module.exports = function(io){
                 checkGameStatus();
             });
 
- 
+            
+            function setNextUserLeader(name){
+                let user = getUserByName(name);
+                userLeader = {name: user?.name, socId: user?.socId};
+                console.log(`New User Leader is ${name}`);
+                io.to(userLeader.socId).emit('leader');
+            }
 
             
             function getUserCastedVotes(){
@@ -150,11 +169,6 @@ module.exports = function(io){
                 user.votes += 1;
             }
         }
-
-
-
-        
-
 
         //create room
             //user who created assigned room leader
@@ -241,13 +255,19 @@ module.exports = function(io){
         return users.find((user) => user.name == name);
     }
 
+    function userExists(name){
+        let user = users.find((user) => user.name == name);
+        if(user){
+            return true;
+        }
+        return false;
+    }
+
     function setReadyStatus(name, ready){
         var user = getUserByName(name);
         user.ready = ready;
     }
 
-    function setNextUserLeader(name){
-        userLeader = {};
-    }
+
 
 }
