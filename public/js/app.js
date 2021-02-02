@@ -1,5 +1,5 @@
 
-
+$('#jTinder-container').hide();
 /**
  * Set button action to trigger jTinder like & dislike.
  */
@@ -43,10 +43,12 @@ document.addEventListener("DOMContentLoaded", function(){
     const myName = $('#myName').html();
     const socket = io();
     const users = [myName];
+
     //initJTinder();
     //create or join room when OK is given
     socket.on('start game', function(){
         $('#jTinder-container').removeClass('d-none');
+        $('#jTinder-container').show(500);
         initJTinder(socket);
         setAllUsersInGame();
     });
@@ -85,10 +87,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
     socket.on('user finish game', function(name){
         if(name == myName){
-
-        }else{
-
+            gameFinished();
         }
+        setUserFinishedGame(name);
     })
 
     socket.on('disconnect', function(){
@@ -97,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     //redirection from server
     socket.on('redirect', function(url){
-        window.location.href = url;
+        window.location.replace(url);
     });
 
     //notify when others leave room
@@ -109,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     //start game only if room leader
     socket.on('all users ready', function(){
+        if($('#startGameBtn').length)return;
         //show start game button
         $('#toggleReadyBtn').remove();
         $('#readyBtnDiv').append('<button id="startGameBtn" class="btn btn-sm btn-primary btn-block">Start Game</button>');
@@ -126,6 +128,12 @@ document.addEventListener("DOMContentLoaded", function(){
     //notify when all places done
 
    /** NON-SOCKET EVENT-LISTENERS */
+
+   $('#leaveRoomBtn').on('click', function(){
+      $(this).prop('disabled', true);
+       socket.emit('leave room');
+      
+   });
     
     $('#toggleReadyBtn').on('click', function(){
         var name = $('#myName').html();
@@ -195,11 +203,20 @@ function setAllUsersInGame(){
 
 }
 
+function setUserFinishedGame(name){
+    let status = $(`#${name}-div span.badge.ready-status`);
+    status.html('Finished');
+    status.removeClass('bg-warning');
+    status.addClass('bg-secondary');
+}
+
 function removeReadyBtnAndAddWaitingStatus(){
     $('#toggleReadyBtn').remove();
+    $('#readyBtnDiv p').remove();
     $('#readyBtnDiv').append('<p>Waiting on Party Leader to start...</p>');
 }
 
 function gameFinished(){
     $('#jTinder-container').remove();
 }
+

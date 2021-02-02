@@ -90,6 +90,10 @@ module.exports = function(io){
                     game.started = false;
                 }
             });
+
+            socket.on('leave room', function(){
+                io.to(socket.id).emit('redirect', '/');
+            });
     
             socket.on('user ready', function(name){
                 setReadyStatus(name, true);
@@ -115,6 +119,7 @@ module.exports = function(io){
             //GAME FUNCTIONS
             socket.on('like', function(id){
                 let place = game.placesVotesMap.find(p => (p.id == id));
+                if(!place)return;
                 console.log(`${socketSession.name} liked ${place.place}`);
                 likePlace(id);
                 votesCasted+=1;
@@ -125,11 +130,25 @@ module.exports = function(io){
 
             socket.on('dislike', function(id){          
                 let place = game.placesVotesMap.find(p => (p.id == id));
+                if(!place)return;
                 console.log(`${socketSession.name} disliked ${place.place}`);    
                 votesCasted+=1;
                 userCastVote();
+                if(getUserCastedVotes() == game.placesVotesMap.length) io.emit('user finish game', socketSession.name);
                 checkGameStatus();
             });
+
+ 
+
+            
+            function getUserCastedVotes(){
+                return getUserByName(socketSession.name).votes;
+            }
+
+            function userCastVote(){
+                let user = getUserByName(socketSession.name);
+                user.votes += 1;
+            }
         }
 
 
@@ -195,14 +214,6 @@ module.exports = function(io){
         return false;
     }
 
-    function getUserCastedVotes(){
-        return getUserByName(socketSession.name).votes;
-    }
-
-    function userCastVote(){
-        let user = getUserByName(socketSession.name);
-        user.votes += 1;
-    }
 
     function checkGameStatus(){
         if(!checkAllVotesCasted) return;
@@ -235,6 +246,8 @@ module.exports = function(io){
         user.ready = ready;
     }
 
-
+    function setNextUserLeader(name){
+        userLeader = {};
+    }
 
 }
