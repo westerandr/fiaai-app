@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
 
 <link rel="stylesheet" type="text/css" href="/css/jTinder.css">
+<link rel="stylesheet" type="text/css" href="/css/chardinjs.css">
 
-<nav class="navbar navbar-light bg-light mb-2 shadow">
+<nav class="navbar navbar-light bg-light mb-2 mb-lg-5 shadow">
     <div class="container-fluid">
         <div class="d-flex">
             <span>
@@ -14,7 +15,7 @@
         </div>
 
       <div class="d-flex justify-content-evenly align-items-center">
-          <span class="navbar-brand mb-0 h2">Talofa <%= name %></span>
+          <span class="navbar-brand mb-0 h2">Talofa <%= name %> 😄 </span>
             <button id="leaveRoomBtn" class="btn btn-sm btn-danger text-white">Leave Room</button>
         
     </div>
@@ -30,18 +31,26 @@
         </div> 
       </div>
 </noscript>
-<div id="jTinder-wrapper-container" class="container">    
-    <div id="jTinder-container" class="d-none">
+<div id="jTinder-wrapper-container ps-xs-2" class="container">    
+    
+    <div id="jTinder-container">
+        
         <!-- start padding container -->
         <div class="wrap">
+            <div id="like-overlay" class="overlay"></div>
+            <div id="dislike-overlay" class="overlay"></div>
+            <div id="banner-img"></div>
             <!-- start jtinder container -->
-            <div id="tinderslide">
+            
+            <div id="tinderslide" class="invisible">
             <input type="hidden" name="len" id="len" value="<%=places.length%>">
                 <ul>
+                
                     <% for(var i = 0; i < places.length; i++){%>
-                    <li class="pane<%= i + 1 %>" data-id="<%= places[i]._id %>">
+                    <li class="pane pane<%= i + 1 %>" data-id="<%= places[i]._id %>">
                         <div class="img" style="background: url(<%= (places[i].image); %>) no-repeat scroll center center;background-size: cover;"></div>
                         <div><%= places[i].name %></div>
+                        <div class="m-center h-100 w-50" style="position:absolute;"></div>
                         <div class="like"></div>
                         <div class="dislike"></div>
                     </li>
@@ -57,12 +66,13 @@
             <a href="#" class="dislike"><i></i></a>
             <a href="#" class="like"><i></i></a>
         </div>
-    
+       
         <!-- jTinder status text  -->
         <!-- <div id="status"></div> -->
     </div>
 </div>
-<div class="container-sm">
+<div class="container-sm mt-5">
+    <p class="text-center subtitle"> 1️1st <span style="font-size:20px;">🍴</span> to reach the most 👍 wins!</p>
     <div class="row d-flex justify-content-around" style="height:200px">
         <div class="col border" style="height: 300px;">
             <div class="container">         
@@ -75,7 +85,7 @@
                                 <li><strong><span id="myName"><%= name %></span></strong></li>
                             </div>
                             <div class="col">
-                                <li><span class="badge bg-danger ready-status">Unready</span></li>
+                                <li><span class="badge bg-danger ready-status">Unready 🙃</span></li>
                             </div>
                         </div>
                       
@@ -92,6 +102,25 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">🥳 And the Winner is...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column">
+          <h1 id="winner-name"></h1>
+          <img id="winner-img" class="w-100 h-100">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     <!-- jQuery lib -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -99,6 +128,8 @@
     <script type="text/javascript" src="/js/jquery.transform2d.js"></script>
     <!-- jTinder lib -->
     <script type="text/javascript" src="/js/jquery.jTinder.js"></script>
+    <!-- chardinjs lib -->
+    <script type="text/javascript" src="/js/chardinjs.min.js"></script>
 <%- include('partials/footer') %>
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 <script src="/js/app.js"></script>

@@ -1,3 +1,4 @@
+const Place = require('../models/place');
 
 module.exports = function(io){
 
@@ -54,13 +55,13 @@ module.exports = function(io){
     };
     
 
-    io.on('connection', function(socket){
+    io.on('connection', async function(socket){
         let socketSession = socket.handshake.session;
 
         if(socketSession.name){
 
             //game started already
-            if(game.started){
+            if(game.started && users.length > 0){
                 let err = 'Sorry! The Game has started already, Come back later!';
                 let dest = '/?errorMsg='+err;
                 return io.to(socket.id).emit('redirect', dest);
@@ -75,33 +76,35 @@ module.exports = function(io){
                 userLeader = {name: socketSession.name, socId: socket.id};
                 console.log(`user leader is ${userLeader.name}`);
             }
-            io.to(userLeader.socId).emit('leader');
             
             if(!userExists(socketSession.name)){
                 users.push({name: socketSession.name, ready: false, votes: 0, socId: socket.id});
                 console.log('users: '+ users.length);
                 io.emit('user join', { name: socketSession.name, ready:false });
-                console.log(`${socketSession.name}:sockId (${socket.id}) has RE-connected`);
+                console.log(`${socketSession.name}:sockId (${socket.id}) has connected`);
                 
             }else{
-                console.log(`${socketSession.name}:sockId (${socket.id}) has connected`);
+
             }
            
     
             socket.on('disconnect', function(){
-                console.log('users: '+ users.length);
-                console.log(`${socketSession.name} disconnected`);
-                removeUserByName(socketSession.name);
+
                 setTimeout(function(){
+                    
                     if(!userExists(socketSession.name)){
+                        console.log('users: '+ users.length);
+                        console.log(`${socketSession.name} disconnected`);
+                        
                         if(socketSession.name == userLeader.name && users.length > 0) setNextUserLeader(users[0].name);
+                        removeUserByName(socketSession.name);
                         io.emit('user disconnect', socketSession.name);
                     }
-                    
-                }, 1000)
-                if(users.length < 1 && game.started){
-                    game.started = false;
-                }
+                    if(users.length < 1 && game.started){
+                        game.started = false;
+                    }
+                }, 3000)
+ 
             });
 
             socket.on('leave room', function(){
@@ -130,7 +133,7 @@ module.exports = function(io){
             });
 
             //GAME FUNCTIONS
-            socket.on('like', function(id){
+            socket.on('like', async function(id){
                 let place = game.placesVotesMap.find(p => (p.id == id));
                 if(!place)return;
                 console.log(`${socketSession.name} liked ${place.place}`);
@@ -141,7 +144,7 @@ module.exports = function(io){
                 checkGameStatus();
             });
 
-            socket.on('dislike', function(id){          
+            socket.on('dislike', async function(id){          
                 let place = game.placesVotesMap.find(p => (p.id == id));
                 if(!place)return;
                 console.log(`${socketSession.name} disliked ${place.place}`);    
@@ -195,6 +198,13 @@ module.exports = function(io){
 
     })
 
+    function updateUserSocketId(name){
+        users.forEach(user => {
+            if(user.name == name){
+                user.socId = socket.id;
+            }
+        })
+    }
 
     function removeUserByName(name){
         var index = users.map(user => {
@@ -214,9 +224,10 @@ module.exports = function(io){
 
     function getWinners(){
         let winners = [];
-        let mostVotes = Math.max(this, game.placesVotesMap.map(p => p.votes));
+        let mostVotes = Math.max(...game.placesVotesMap.map(p => p.votes));
+        console.log(mostVotes)
         game.placesVotesMap.forEach(place => {
-            if(place.votes == mostVotes) winners.push(place.place);
+            if(place.votes == mostVotes) winners.push({id: place.id, name: place.place});
         });
         return winners;
     }
@@ -229,15 +240,13 @@ module.exports = function(io){
     }
 
 
-    function checkGameStatus(){
-        if(!checkAllVotesCasted) return;
+    async function checkGameStatus(){
+        if(!checkAllVotesCasted()) return;
         let winners = getWinners();
+        console.log(winners)
         game.started = false;
-        if(winners.length > 1){
-            io.emit('game over multiple', winners);
-        }else{
-            io.emit('game over single', winners[0]);
-        }
+        const place = await Place.findById(winners[0].id);
+        io.emit('game over', {winner: winners[0].name, img: place.image});
     }
 
     function checkAllUsersReady(){
