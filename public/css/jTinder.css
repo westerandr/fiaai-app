@@ -247,6 +247,7 @@ html, body {
     z-index: 100;
     background: url('/img/fiaai-bg.jpg') no-repeat scroll center center transparent;
     background-size: cover;
+    border-radius: 5%;;
 }
 
 

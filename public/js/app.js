@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const myName = $('#myName').html();
     const socket = io();
     const users = [myName];
+    
     let leader = false;
     $('#numPlaces').html($('#len').val());
 
@@ -161,7 +162,8 @@ document.addEventListener("DOMContentLoaded", function(){
       
    });
     
-    $('#toggleReadyBtn').on('click', function(){
+    $('#toggleReadyBtn').click(function(){
+        alert(777)
         var name = $('#myName').html();
         var isReady = $(`#${name}-div .ready-status`).hasClass('bg-danger');
         isReady? setUserReady(name): setUserUnready(name);
@@ -206,14 +208,14 @@ function setUserReady(name){
     var userStatus = $(`#${name}-div .ready-status`);
     userStatus.removeClass('bg-danger');
     userStatus.addClass('bg-success');
-    userStatus.html('Ready 🙂');
+    userStatus.html('Ready');
 }
 
 function setUserUnready(name){
     var userStatus = $(`#${name}-div .ready-status`);
     userStatus.removeClass('bg-success');
     userStatus.addClass('bg-danger');
-    userStatus.html('Unready 🙃');
+    userStatus.html('Unready');
 }
 
 function setAllUsersInGame(){
